@@ -9,9 +9,9 @@ My code is structured around a class called DriveSquare; the only functions writ
 
 ### Relevant GIFs
 *While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
-![gif1](../gifs/final_square.gif)
-![gif2](../gifs/bad_linear.gif)
-![gif3](../gifs/turns_in_place.gif)
+![gif1](gifs/final_square.gif)
+![gif2](gifs/bad_linear.gif)
+![gif3](gifs/turns_in_place.gif)
 ### Challenges
 *Describe the challenges you faced and how you overcame them.*
 The first challenge I faced was that, despite going through exercises in class, I still had a very poor understanding of the general ROS framework/how to work with topics and publish messages. I combated this by going over the work we'd done so far thoroughly, and attending Pouya's office hours on Sunday. The office hours were immensely helpful, as exercise 2 in class uses /cmd_vel as well, and after attending I understood the basic ROS framework well.
