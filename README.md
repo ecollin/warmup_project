@@ -9,6 +9,7 @@ My code is structured around a class called DriveSquare; the only functions writ
 
 ### Relevant GIFs
 *While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
+The first gif below is a gif of the robot moving in a square using my final code. The second gif is a gif of the robot moving in a straight line with no change in velocity over a long distance--it demonstrates the effect of drift on robot trajectory even without changing velocity. The third gif shows the accuracy with which the robot turns 90° at a time in place when it is not moving linearly--for some reason, the angle seems to be ruined when combined with the linear moving, as you can see in the first gif. Note that all three gifs were created using only slight variations of my final code where different lines were commented out, so the differences are not due to different ways of implementing (although the linear speed is higher in the linear_drift gif for demonstrative purposes). 
 ![gif1](gifs/square_drive.gif)
 ![gif2](gifs/linear_drift.gif)
 ![gif3](gifs/turns_in_place.gif)
