@@ -9,8 +9,8 @@ My code is structured around a class called DriveSquare; the only functions writ
 
 ### Relevant GIFs
 *While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
-![gif1](gifs/final_square.gif)
-![gif2](gifs/bad_linear.gif)
+![gif1](gifs/square_drive.gif)
+![gif2](gifs/linear_drift.gif)
 ![gif3](gifs/turns_in_place.gif)
 ### Challenges
 *Describe the challenges you faced and how you overcame them.*
