@@ -19,10 +19,13 @@ class DriveSquare(object):
 
     def run(self):
         move_speed = 0.2
+        # Time to spend drawing the lines of the square
         move_time = 3
+        # Time to spend turning; total turn will be 90 degrees regardless
+        # of valiue
         turn_time = 2
         turn_speed = (pi / 2) / turn_time # 90 degrees in turn_time secs
-        for _ in range(16):
+        while True:
             self.twist.linear.x = move_speed
             # Next line does nothing on first iteration
             self.twist.angular.z = 0
@@ -32,9 +35,6 @@ class DriveSquare(object):
             self.twist.angular.z = turn_speed 
             self.twist_pub.publish(self.twist)
             rospy.sleep(turn_time)
-            self.twist.angular.z = 0
-            self.twist_pub.publish(self.twist)
-            rospy.sleep(2)
 
 if __name__ == '__main__':
     node = DriveSquare()
