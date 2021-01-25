@@ -47,14 +47,6 @@ class WallFollower:
         """
         return nearest_ang not in range(desired_ang - tolerance, desired_ang + tolerance)
 
-    def orient(self, nearest_degree_ang, desired_degree_ang=270):
-        nearest_ang = radians(nearest_degree_ang)
-        desired_ang = radians(desired_degree_ang)
-        ang_err = nearest_ang - desired_ang
-        self.twist.angular.z = self.compute_PID(error=ang_err, k=0.3)
-        self.twist.linear.x = 0
-        self.twist_pub.publish(self.twist)
-
     def move_to_wall(self, data):
         # Process current data before we get more
         close = 0.5
@@ -66,7 +58,12 @@ class WallFollower:
             # If we always turn left, this means the wall we're following is at 
             # 270 degrees anticlockwise from the front of robot
             if self.orient_needed(nearest_ang):
-                self.orient(nearest_ang)
+                nearest_ang = radians(nearest_ang)
+                desired_ang = radians(270)
+                ang_err = nearest_ang - desired_ang
+                self.twist.angular.z = self.compute_PID(error=ang_err, k=0.3)
+                self.twist.linear.x = 0
+                self.twist_pub.publish(self.twist)
             else:    
                 self.twist.linear.x = self.twist.angular.z = 0
                 self.twist_pub.publish(self.twist)
