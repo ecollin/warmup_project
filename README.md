@@ -41,30 +41,47 @@ Imprefect robotics: my other big takeaway from this project is that when working
 # Wall Follower
 ### High-level approach
 *For each robot behavior, describe the problem and your approach at a high-level. Include any relevant diagrams or pictures that help to explain your approach.*
-
-
+This problem can be broken into several subproblems. First, you need to get to a wall and orient yourself to follow it. Then, you need to follow the wall, making sure that you stay straight. And third, you need to handle corners/turn at them. My approach was to attack these subproblems separately, using a class held state variable to note which one I was working on. The first subproblem just involved moving and then turning such that the robots right faced the nearest wall,
+ the second involved looking at the distance to the first object at angles 225 vs 315 and trying to equalize them to keep straight, and the third involved using PID to turn until the robots left once again faced the nearest wall.
+ 
 ### Structure of the code
 *Describe the structure of your code. For the functions you wrote, describe what each of them does.*
+My code is structured within a WallFollower class that stores state regarding which subproblem we are on. 
+-init: we setup a publish to \cmd_vel and a subscriber callback, scan_callback, for /scan. We set the initial state to MOVE_TO_WALL
+-scan_callback: This function just forwards the scan data to the relevant handler depending on the current state 
+-move_to_wall: state handler for the subproblem of moving to the wall. First, checks if the nearest object is close enough for us to follow it as a wall. If so, the function uses PID to turn untl its right side is facing that wall, changes the state variable to FOLLOW_WALL, and returns. Otherwise, it just moves in the direction of then nearest object.
+-follow_wall: After some setup, checks if we are at a corner by seeing if the object straight ahead of the robot is quite close. If so, sets the state to CORNER and returns. Otherwise, we just need to keep following the wall and keep straight. To do this, the function compares the distance to the nearest object at angle 225(counterclockwise from the from of the robot) and 315. We are going straight if and only if they are equal, so we try to keep them equal; if one is larger, we turn to counter that. 
+-handle_corner: First, checks if the robots closest point to a wall is its left face (using reorient_needed, described later). If not, then we need to keep handle turning the corner. We do this by setting the angular velocity using a PID and also keeping a small linear velocity. This results in the corner turning (usually). If the robots closest point to a wall is its left face though, we are done handling the corner and depending on how far we moved from the wall in handling the corner we either switch state to MOVE_TO_WALL or FOLLOW_WALL.
+-compute_PID: Helper function that just takes a K value and and error value and returns the product (PID); used to make code cleaner. 
+-reorient_needed: Helper function that just checks if the robots closest point to a wall is its left face; returns true if not, in which case the robot needs to "reorient." Takes as parameters the current angle to nearest object, the desired angled for it, and the tolerance in that desired angle. 
+-argmin_min: Helper function called in lots of the others that, given an array of values, returns a tuple of the form (index of minimum value, minimum value). Used to find the angle of the nearest object to the robot and the distance to that object using data.ranges (where data is the input to the callback given when subscribing to \scan).
+-run: Basic function that just calls rospy.spin() to keep the scan subscription data flowing without the program ending.
 
 
 ### Relevant GIFs
 *While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
 
+First gif: gif of my final code running. Second gif: example of problem I ran into: spinning for a long time at corners. Third gif: Example of another problem I ran into: loops at corners before performing correct turn.
 ![gif1](gifs/wall_follower.gif)
 ![gif1](gifs/WF_infinite_spinning.gif)
 ![gif1](gifs/WF_loops.gif)
 
 ### Challenges
 *Describe the challenges you faced and how you overcame them.*
+I had a ton of trouble with this assignment. The first challenge I faced was conceptualizing the stages of the problem/figuring out how to approach it. I solved this challenge by attending Sarah's office hours, which greatly elucidated the problem for me. In particular, I got the idea for looking at the distance to the nearest object at angles 225 and 315 in order to keep straight on a wall, from her. Then, when programming, I got confused about how to move towards a desired angle using the interface of angular velocity. At first I just tried setting angular velocity to the desired angle! After thought and review of other work, in particular the prior class, I realized PID could be used; this technique was super useful. A final challenge I faced was detecting and turning corners. I had several ideas on how to detect them, but they all had problems (getting stuck due to going too deep into corner or stuck in infinite loops as seen in the gif above), and similar for how to move through them. I improved my robots behavior mostly through trial and error here of all the different ideas, but didn't fully conquer the challenge. 
 
 ### If I Had More Time, How Would I Improve the Behavior?
 *If you had more time, how would you improve your robot behaviors?*
+
+The bigget thing I would change with more time is improving corner behavior. Although sometimes the robot will successfully and cleanly traverse corner after corner, sometimes it gets stuck against walls, stuck in a long loop as seen in the third gif, or makes a strange loop to complete a turn as seen in the second gif. I think that the this could all be improved by changing up the detection method of corners and the method of turning them. Another thing I would improve on is the code structure. I initially went for a state based model with three states-move_to_wall, follow_wall, and corner. This works OK, but as I got later in the process I felt like it was a little unclean/more states would be helpful. One thing that seemed bad to me is that move_to_wall requires reorienting and as does turning a corner, so perhaps some code could be put into another state to prevent duplication. Also, sometimes the robot gets to close to the wall, and another state to handle moving it further when that happens would be helpful. 
 
 
 ### Key Takeaways 
 *What are your key takeaways from this project that would help you/others in future robot programming assignments? For each takeaway, provide a few sentences of elaboration.*
 
+* My biggest takeaway from this project is that, even though guessing and fine-tuning can get you results, it takes a LOT more time than just sitting down and thinking things through conceptually. I spent far too long trying to fine-tune my code for corners with small changes that didn't change much until I decided to sit down and think it through fully, which helped a lot. I think doing it more and sooner would have stopped me from having a robot that sometimes does not turn well. 
 
+* Another big takeaway for me from this project is a much improved understanding of PID. After the class exercise I didn't really get it, but when I had to think about how to get my program to turn/reorient and employ it multiple times it finally sunk in quite well.  Everywher I applied it I think going about it differently would have taken a lot more code and more precise code, which makes it a very powerful concept. 
 
 # Person Follower
 ### High-level approach
