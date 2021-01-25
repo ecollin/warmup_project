@@ -25,11 +25,9 @@ class PersonFollower:
              self.twist.linear.x = self.twist.angular.z = 0
              self.twist_pub.publish(self.twist)
              return
+        # Use PID to get angle right. Desired angle is 0, will be implicit
         tolerance = 10 
-        desired_angle = 0
         k = 0.01
-        # PID. Desired angle is nearest_ang, current_angle is 0
-        # so differenc is just nearest_ang. 
         if nearest_ang > 360 - tolerance or nearest_ang < tolerance:
             self.twist.angular.z = 0
         else:
