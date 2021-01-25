@@ -51,6 +51,9 @@ Imprefect robotics: my other big takeaway from this project is that when working
 *While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
 
 ![gif1](gifs/wall_follower.gif)
+![gif1](gifs/WF_infinite_spinning.gif)
+![gif1](gifs/WF_loops.gif)
+
 ### Challenges
 *Describe the challenges you faced and how you overcame them.*
 
@@ -78,6 +81,7 @@ The code is a very basic ROS program all within a PersonFollower class. The clas
 *While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
 
 ![gif1](gifs/person_follower.gif)
+
 ### Challenges
 *Describe the challenges you faced and how you overcame them.*
 Conceptually this problem was not very challenging, and any trickiness the implementation's details might have solved were greatly ameliorated by having first spent lots of time on WallFollower. The biggest challenges I faced were deciding how to handle getting the robot to stop turning/moving when it was facing the object/near to it and choosing the k value to be used in PID. The former challnege just required some thinking at which point I realized I could just set the velocities to 0 if we were close enough to the desired value. The latter challenge was solved by seeing what values of k I had used in other programs and experimenting based on that.
