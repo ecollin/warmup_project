@@ -49,7 +49,6 @@ class WallFollower:
 
     def move_to_wall(self, data):
         # Process current data before we get more
-        close = 0.5
         nearest_ang, nearest_dist = self.argmin_min(data.ranges)
         # If we are already close to a wall and should change states
         # Follow wall will also turn if needed
