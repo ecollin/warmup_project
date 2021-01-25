@@ -36,3 +36,34 @@ As evidenced by the gif above, my robot doesn't really move in in a square that 
 Working with ROS topics: as mentioned above, starting this project I had a poor grasp of how to handle ROS topics--how to gather information on them, publish to them, and subscribe to them. In having to work on this basic example of robot behavior, I had to learn all about these. While I'm sure I still have a lot to learn, perhaps my biggest takeaway from this will be the understanding of these topics I gained in working through the project
 
 Imprefect robotics: my other big takeaway from this project is that when working with robotics--even if you're just simulating them--you have to deal with real world noise and imperfections. It is very easy to draw out a diagram of a square with perfect 90° angles and say you just need to make the robot move for the same amount of time when going on each line and making the angles--as I did in my high-level summary--but in the real world there is drift and other factors such that even if you code things up well you won't get the result you want. Similarly, the first high-level idea I conceived above described above (that involves moving in the +y and -y directions) makes perfect conceptual sense, but isn't implementable for turtlebot. Robotics don't work in the perfect world of Platonic ideals but in our world, and you need to program taking this into account, and perhaps be willing to accept imperfections. 
+
+# Person Follower
+### High-level approach
+*For each robot behavior, describe the problem and your approach at a high-level. Include any relevant diagrams or pictures that help to explain your approach.*
+
+The task can be broken down into a few steps: turning towards the nearest object, moving towards the nearest object, and knowing to stop when you get close to the object. To solve the problem, I just had to make the robot do each of these tasks independently: turn towards the object while moving towards it, and if you get close or are facing it, stop turning/stop moving.
+
+### Structure of the code
+*Describe the structure of your code. For the functions you wrote, describe what each of them does.*
+
+The code is a very basic ROS program all within a PersonFollower class. The class has an init function which sets up publishing and subscribing to /cmd_vel and /scan respectively. The work of the program is in the function scan_callback, which is the subscription function for scan. Whenever it receives data, it finds the distance to the closest object and its corresponding angle by iterating through data.ranges. It then updates the angular velocity using a basic PID update if the robot is not facing the object or sets it to 0 if it is facing the object, and sets the linear velocity to a constant 0.3 value unless the robot is within 0.5 of the object in which case it updates it to 0. There is also a basic run function that just calls rospy.spin() to keep the code running.
+
+### Relevant GIFs
+*While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
+
+![gif1](gifs/person_follower.gif)
+### Challenges
+*Describe the challenges you faced and how you overcame them.*
+Conceptually this problem was not very challenging, and any trickiness the implementation's details might have solved were greatly ameliorated by having first spent lots of time on WallFollower. The biggest challenges I faced were deciding how to handle getting the robot to stop turning/moving when it was facing the object/near to it and choosing the k value to be used in PID. The former challnege just required some thinking at which point I realized I could just set the velocities to 0 if we were close enough to the desired value. The latter challenge was solved by seeing what values of k I had used in other programs and experimenting based on that.
+
+### If I Had More Time, How Would I Improve the Behavior?
+*If you had more time, how would you improve your robot behaviors?*
+While I think my robot achieves all the asked for goals pretty well, it does sometimes, when it gets to an object, spin more than it needs to (for instance, doing a 360 before stopping facing the object; this can be witnessed in my gif briefly). If I had more time, I would try to fix this problem, which I think is caused by variation in the angle of the nearest object that happens when you get close to an object. To expand the robots behavior, I would also explore how it behaves when you add lots of objects around it, as there might be a similar problem in that case where the angles lead the robot to move quite indirectly or not be able to decide which object to go to since more than one may appear to be the closest object at different moments in its movement.
+
+
+### Key Takeaways 
+*What are your key takeaways from this project that would help you/others in future robot programming assignments? For each takeaway, provide a few sentences of elaboration.*
+
+* My first takeaway is that to get PID to work with angles you generally need to have a very small k value. I first started trying to point at the object using k values ~50 times as large as the one I ended up using and the robot continuously spun. More generally, I could say I learned that you should experiment with vastly different values for k, as something 100x larger or smaller may be what you need, which is a wider range of values than I am used to experimenting with.
+
+* Turning is weird and hard to get right with the methods I have been using. All the things I would improve if I had more time involve the robot spinning too much, and I had similar problems with the wall follower. Its easy to overshoot an angle and then if you're only turning one way, have to keep spinning a whole other rotation. This also means that small/natural fluctuations in the nearest angle can cause a whole extra rotation.
