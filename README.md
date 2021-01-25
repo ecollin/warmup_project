@@ -37,6 +37,32 @@ Working with ROS topics: as mentioned above, starting this project I had a poor 
 
 Imprefect robotics: my other big takeaway from this project is that when working with robotics--even if you're just simulating them--you have to deal with real world noise and imperfections. It is very easy to draw out a diagram of a square with perfect 90° angles and say you just need to make the robot move for the same amount of time when going on each line and making the angles--as I did in my high-level summary--but in the real world there is drift and other factors such that even if you code things up well you won't get the result you want. Similarly, the first high-level idea I conceived above described above (that involves moving in the +y and -y directions) makes perfect conceptual sense, but isn't implementable for turtlebot. Robotics don't work in the perfect world of Platonic ideals but in our world, and you need to program taking this into account, and perhaps be willing to accept imperfections. 
 
+
+# Wall Follower
+### High-level approach
+*For each robot behavior, describe the problem and your approach at a high-level. Include any relevant diagrams or pictures that help to explain your approach.*
+
+
+### Structure of the code
+*Describe the structure of your code. For the functions you wrote, describe what each of them does.*
+
+
+### Relevant GIFs
+*While recording your robot's behavior in a rosbag conducting each type of behavior, also record a gif of the robot visually. Include this gif in your writeup and use it for analysis if needed. For instructions on how to make a gif recording, look at Gazebo simulator.*
+
+![gif1](gifs/wall_follower.gif)
+### Challenges
+*Describe the challenges you faced and how you overcame them.*
+
+### If I Had More Time, How Would I Improve the Behavior?
+*If you had more time, how would you improve your robot behaviors?*
+
+
+### Key Takeaways 
+*What are your key takeaways from this project that would help you/others in future robot programming assignments? For each takeaway, provide a few sentences of elaboration.*
+
+
+
 # Person Follower
 ### High-level approach
 *For each robot behavior, describe the problem and your approach at a high-level. Include any relevant diagrams or pictures that help to explain your approach.*
