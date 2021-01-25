@@ -21,7 +21,6 @@ class PersonFollower:
         for (degree, dist) in enumerate(data.ranges):
             if dist < nearest_dist:
                 nearest_ang, nearest_dist = degree, dist
-        print(nearest_dist, nearest_ang)
         if nearest_dist == float('inf'):
              self.twist.linear.x = self.twist.angular.z = 0
              self.twist_pub.publish(self.twist)
