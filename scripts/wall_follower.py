@@ -41,7 +41,7 @@ class WallFollower:
                 min_index, min_val = i, val 
         return (min_index, min_val)
 
-    def orient_needed(self, nearest_ang, desired_ang=270, tolerance=5):
+    def reorient_needed(self, nearest_ang, desired_ang=270, tolerance=5):
         """
         Returns true if robot's nearest angle is within tolerance of desired_ang
         """
@@ -56,7 +56,7 @@ class WallFollower:
             # orient such that the angle of closest wall is on the robot's left 
             # If we always turn left, this means the wall we're following is at 
             # 270 degrees anticlockwise from the front of robot
-            if self.orient_needed(nearest_ang):
+            if self.reorient_needed(nearest_ang):
                 nearest_ang = radians(nearest_ang)
                 desired_ang = radians(270)
                 ang_err = nearest_ang - desired_ang
@@ -106,7 +106,7 @@ class WallFollower:
 
     def handle_corner(self, data):
         nearest_ang, nearest_dist = self.argmin_min(data.ranges)
-        if self.orient_needed(nearest_ang, tolerance=5):
+        if self.reorient_needed(nearest_ang, tolerance=5):
             ang_error = nearest_ang - radians(270)
             self.twist.angular.z = self.compute_PID(error=ang_error, k=0.005)
             self.twist.linear.x = 0.2
